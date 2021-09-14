@@ -8,14 +8,14 @@ const client = new Client({
 });
 
 // Registrare tutti i comandi presi dai file contenuti nella directory /commands
-client.commands = new Collection();
-const commandFiles = fs
-  .readdirSync("./commands")
-  .filter((file) => file.endsWith(".js"));
-for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  client.commands.set(command.data.name, command);
-}
+// client.commands = new Collection();
+// const commandFiles = fs
+//   .readdirSync("./commands")
+//   .filter((file) => file.endsWith(".js"));
+// for (const file of commandFiles) {
+//   const command = require(`./commands/${file}`);
+//   client.commands.set(command.data.name, command);
+// }
 
 /**
  * Registrazione comandi GLOBALI e GUILD
@@ -120,32 +120,32 @@ client.on("messageCreate", async (message) => {
 /**
  * Interazione ai comandi registrati
  */
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isCommand()) return;
+// client.on("interactionCreate", async (interaction) => {
+//   if (!interaction.isCommand()) return;
 
-  const commandName = interaction.commandName;
-  if (!client.commands.has(commandName)) return;
+//   const commandName = interaction.commandName;
+//   if (!client.commands.has(commandName)) return;
 
-  if (
-    interaction.user.id !== interaction.member.guild.ownerId &&
-    client.commands.get(commandName).admin
-  ) {
-    await interaction.reply({
-      content: "Non hai i permessi per utilizzare questo comando",
-      ephemeral: true,
-    });
-    return;
-  }
+//   if (
+//     interaction.user.id !== interaction.member.guild.ownerId &&
+//     client.commands.get(commandName).admin
+//   ) {
+//     await interaction.reply({
+//       content: "Non hai i permessi per utilizzare questo comando",
+//       ephemeral: true,
+//     });
+//     return;
+//   }
 
-  try {
-    await client.commands.get(commandName).execute(interaction);
-  } catch (err) {
-    console.error(err);
-    await interaction.reply({
-      content: "Qualcosa è andato storto!",
-      ephemeral: true,
-    });
-  }
-});
+//   try {
+//     await client.commands.get(commandName).execute(interaction);
+//   } catch (err) {
+//     console.error(err);
+//     await interaction.reply({
+//       content: "Qualcosa è andato storto!",
+//       ephemeral: true,
+//     });
+//   }
+// });
 
 client.login(process.env.DISCORD_BOT_TOKEN);
