@@ -68,10 +68,10 @@ client.on("messageCreate", async (message) => {
 
   if (
     message.channelId === process.env.CHANNEL_REGOLAMENTO_ID &&
-    // message.author.id !== client.application?.owner.id &&
+    message.author.id !== client.application?.owner.id &&
     message.author.username !== process.env.BOT_NAME
   ) {
-    if (message.content === "accetto") {
+    if (message.content === "accetto il regolamento") {
       if (message.member.roles.cache.has(process.env.ROLE_GIOVANE_ID)) {
         const reply = await message.reply({
           content: `Hai già il ruolo`,
@@ -87,28 +87,37 @@ client.on("messageCreate", async (message) => {
         try {
           await message.member.roles.add(role);
           const reply = await message.reply({
-            content: `Benvenuto tra i Boomers! A breve questo messaggio verrà rimosso!`,
+            content: `Benvenuto tra i Boomers! La sua soddisfazione è il nostro miglior premio!`,
             ephemeral: true,
           });
           await wait(5000);
+
+          // await message.author.send("**Benvenuto tra i Boomers!**\nPer ogni dubbio o segnalazione contattaci sul canale vocale 'assistenza'.")
           await message.delete();
           await reply.delete();
+          // sposta l'utente su un canale
+          //const channel = message.guild.channels.cache.get("CHANNEL_ID"); //spazio1
+          //member.voice.setChannel(channel)
         } catch (err) {
           console.error(err);
-          // await message.reply({
-          //   content: `Qualcosa è andato storto!`,
-          //   ephemeral: true,
-          // });
+          await message.reply({
+            content: `Qualcosa è andato storto!`,
+            ephemeral: true,
+          });
         }
         // await message.delete();
       }
+    }else{
+      const reply = await message.reply({
+        content: `Questa chat è riservata all'approvazione del regolamento, se hai bisogno di assistenza rivolgiti al canale vocale "assistenza"`,
+        ephemeral: true,
+      });
+      await wait(5000);
+
+      await message.delete();
+      await reply.delete();
     }
     return;
-    // if (message.content === "accetto") {
-    //   await message.reply("ok");
-    // } else {
-    //   await message.reply("fail");
-    // }
   } else if (
     message.content.toLocaleLowerCase() === "!registra" &&
     message.author.id === client.application?.owner.id
