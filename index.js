@@ -95,12 +95,12 @@ client.on("messageCreate", async (message) => {
           await reply.delete();
         } catch (err) {
           console.error(err);
-          await message.reply({
-            content: `Qualcosa è andato storto!`,
-            ephemeral: true,
-          });
+          // await message.reply({
+          //   content: `Qualcosa è andato storto!`,
+          //   ephemeral: true,
+          // });
         }
-        await message.delete();
+        // await message.delete();
       }
     }
     return;
